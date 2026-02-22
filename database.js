@@ -145,7 +145,7 @@ export async function getRateRows() {
     return Array.from(rowMap.values());
 }
 
-export async function getTransactions() {
+export async function getTransactionsByUser(userLogin) {
     const [rows] = await pool.query(
         `SELECT t.id,
                 t.transaction_date  AS transactionDate,
@@ -156,7 +156,8 @@ export async function getTransactions() {
                 t.exchange_rate     AS exchangeRate
          FROM transactions t
                   JOIN users u ON u.id = t.user_id
-         ORDER BY t.transaction_date DESC`
+         WHERE u.user_login = ?
+         ORDER BY t.transaction_date DESC`, [userLogin]
     );
     return rows;
 }

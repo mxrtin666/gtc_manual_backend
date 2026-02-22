@@ -5,7 +5,7 @@ import {
     getCountries, getCountry,
     getCurrencies,
     getRateRows,
-    getTransactions, createTransaction
+    getTransactionsByUser, createTransaction
 } from './database.js';
 
 const app = express();
@@ -82,7 +82,11 @@ app.post('/users', async (req, res) => {
 // --- Transactions ---
 
 app.get('/transactions', async (req, res) => {
-    const transactions = await getTransactions();
+    const { userLogin } = req.query;
+    if (!userLogin) {
+        return res.status(400).json({ error: 'userLogin query parameter is required' });
+    }
+    const transactions = await getTransactionsByUser(userLogin);
     res.json(transactions);
 });
 

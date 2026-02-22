@@ -1,0 +1,6 @@
+node_modules
+.gitignore
+db/init.sql
+.env
+db
+.idea

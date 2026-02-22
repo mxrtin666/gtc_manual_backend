@@ -1,0 +1,34 @@
+services:
+  web:
+    image: mxrtin666/gtc-web:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+
+  backend:
+    image: mxrtin666/gtc-back:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQLHOST=db
+      - MYSQLUSER=gtc
+      - MYSQLPASSWORD=123regtrbh45
+      - MYSQLDATABASE=gtc
+
+  db:
+    image: mxrtin666/gtc-db:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=123regtrbh45
+      - MYSQL_DATABASE=gtc
+      - MYSQL_USER=gtc
+      - MYSQL_PASSWORD=123regtrbh45
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:

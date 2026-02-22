@@ -1,18 +1,20 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const PORT = 8080;
 
-app.use( express.json())
+import {getUsers, getUser} from "./database.js";
 
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get("/users", async (req, res) => {
+    const users = await getUsers();
+    res.json(users);
 })
 
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+})
 
-app.get('/test', (req, res) => {
-  res.status(200).send({
-      message: 'Test endpoint reached!',
-      size: 'large'
-  });
+app.listen(8080, () => {
+    console.log('Server is running on port 8080');
 });
+
